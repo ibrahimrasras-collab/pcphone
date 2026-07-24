@@ -1,0 +1,36 @@
+# Railway deployment config
+# Docs: https://docs.railway.app/reference/config-as-code
+# Usage: Go to https://railway.app → New Project → Deploy from GitHub repo
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "backend/Dockerfile"
+watchPatterns = ["/backend"]
+
+[deploy]
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[[deploy.envVars]]
+key = "JWT_SECRET"
+value = "auto-generate-a-secret-here-32-chars"
+
+[[deploy.envVars]]
+key = "DATABASE_URL"
+fromDatabase = "postgres"
+
+[[deploy.envVars]]
+key = "REDIS_URL"
+fromDatabase = "redis"
+
+[[deploy.envVars]]
+key = "TWILIO_ACCOUNT_SID"
+value = "set-me-in-dashboard"
+
+[[deploy.envVars]]
+key = "TWILIO_AUTH_TOKEN"
+value = "set-me-in-dashboard"
+
+[[deploy.envVars]]
+key = "NODE_ENV"
+value = "production"

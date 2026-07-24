@@ -1,0 +1,65 @@
+# Render deployment config
+# Docs: https://render.com/docs/blueprint-spec
+# Usage: connect your GitHub repo at https://render.com → New → Blueprint
+
+services:
+  - type: postgres
+    name: pcphone-db
+    region: oregon
+    plan: free
+    ipAllowList: []
+
+  - type: redis
+    name: pcphone-redis
+    region: oregon
+    plan: free
+    ipAllowList: []
+
+  - type: web
+    name: pcphone-api
+    region: oregon
+    plan: free
+    dockerContext: backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pcphone-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: pcphone-redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGIN
+        value: https://pcphone-web.onrender.com
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: APNS_KEY_ID
+        sync: false
+      - key: APNS_TEAM_ID
+        sync: false
+      - key: FCM_SERVER_KEY
+        sync: false
+
+  - type: web
+    name: pcphone-web
+    region: oregon
+    plan: free
+    root: mobile
+    buildCommand: npx expo export --platform web
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: true
+    envVars:
+      - key: REACT_NATIVE_API_URL
+        fromService:
+          type: web
+          name: pcphone-api
+          property: host

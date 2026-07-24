@@ -8,6 +8,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
 
   DATABASE_URL: z.string().url(),
+  PUBLIC_URL: z.string().url().optional(),
   REDIS_URL: z.string().url().optional(),
 
   JWT_SECRET: z.string().min(32),
@@ -24,6 +25,12 @@ const envSchema = z.object({
   S3_ACCESS_KEY: z.string().optional(),
   S3_SECRET_KEY: z.string().optional(),
   S3_BUCKET: z.string().default("pcphone-recordings"),
+
+  APNS_KEY_ID: z.string().optional(),
+  APNS_TEAM_ID: z.string().optional(),
+  APNS_KEY_PATH: z.string().optional(),
+  APNS_BUNDLE_ID: z.string().default("com.pcphone.app"),
+  FCM_SERVER_KEY: z.string().optional(),
 
   CORS_ORIGIN: z.string().default("*"),
 

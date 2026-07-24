@@ -11,3 +11,5 @@ dist/
 service-account*.json
 token-gh
 *.pem
+admin/dist
+

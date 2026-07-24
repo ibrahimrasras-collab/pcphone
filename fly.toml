@@ -1,0 +1,34 @@
+# Fly.io deployment configuration
+# Docs: https://fly.io/docs
+# Usage:
+#   npm install -g flyctl
+#   fly launch --config fly.toml
+#   fly deploy
+
+app = "pcphone-api"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "backend/Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "4000"
+
+[http_service]
+  internal_port = 4000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[checks]
+  grace_period = "30s"
+  interval = "30s"
+  method = "get"
+  path = "/api/v1/health"
+  timeout = "5s"
+
+[[metrics]]
+  path = "/metrics"
+  port = 4000
