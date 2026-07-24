@@ -1,12 +1,9 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-
-const API_BASE_URL = __DEV__
-  ? "http://localhost:4000/api/v1"
-  : "https://api.phone.example.com/api/v1";
+import { config } from "./config";
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: config.apiBaseUrl,
   timeout: 15000,
   headers: {
     "Content-Type": "application/json",
@@ -31,7 +28,7 @@ api.interceptors.response.use(
         const refreshToken = await SecureStore.getItemAsync("refresh_token");
         if (!refreshToken) throw new Error("No refresh token");
 
-        const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+        const { data } = await axios.post(`${config.apiBaseUrl}/auth/refresh`, {
           refreshToken,
         });
 
