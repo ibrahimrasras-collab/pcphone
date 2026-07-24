@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "PCPhone",
+    "slug": "pcphone",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "pcphone",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pcphone.app",
+      "infoPlist": {
+        "UIBackgroundModes": ["voip", "audio", "remote-notification"],
+        "NSMicrophoneUsageDescription": "PCPhone needs microphone access for calls"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.pcphone.app",
+      "permissions": [
+        "RECORD_AUDIO",
+        "INTERNET",
+        "READ_PHONE_STATE",
+        "FOREGROUND_SERVICE",
+        "WAKE_LOCK"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-notifications"
+    ]
+  }
+}

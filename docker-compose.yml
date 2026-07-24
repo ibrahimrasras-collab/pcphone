@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pcphone
+      POSTGRES_PASSWORD: pcphone
+      POSTGRES_DB: pcphone
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: postgres://pcphone:pcphone@postgres:5432/pcphone
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: dev-jwt-secret-change-in-production-min-32-chars
+      NODE_ENV: development
+      CORS_ORIGIN: "*"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend/src:/app/src
+
+volumes:
+  pgdata:
